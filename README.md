@@ -37,7 +37,7 @@ Pandora is a testing framework for evaluating online assessments on their suscep
     ```
 
 3.  **Configure Environment Variables:**
-    Create a `.env` file in the root of the project directory by copying and renaming .env.example.
+    Create a `.env` file in the root of the project directory by copying and renaming `.env.example`
 
     ```env.example
     # Browserbase Configuration
