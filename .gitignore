@@ -1,0 +1,12 @@
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Output directory for logs and screenshots
+output/
+
+# Optional: OS-specific files
+.DS_Store
+Thumbs.db 

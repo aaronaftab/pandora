@@ -1,0 +1,13 @@
+{
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@browserbasehq/sdk": "^2.5.0",
+    "dotenv": "^16.5.0",
+    "openai": "^4.97.0",
+    "playwright-core": "^1.52.0",
+    "winston": "^3.17.0"
+  }
+}
