@@ -21,7 +21,7 @@ Pandora is a testing framework for evaluating online assessments on their suscep
 *   npm (usually comes with Node.js)
 *   Access to a Canvas instance with a quiz you want to target, or an LMS of your choice with an assessment you want to test.
 *   A Browserbase account and API key (free plan includes 60 min of scraping/month)
-*   An OpenAI account and API key (running this on a 5-question Canvas quiz takes about 
+*   An OpenAI account and API key (running this on a 5-question Canvas quiz costs ~7k tokens/2 cents)
 
 ## Setup
 
