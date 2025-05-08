@@ -2,8 +2,8 @@ import { loginToCanvas } from './login.js';
 import { config } from './config.js';
 import OpenAI from 'openai';
 import winston from 'winston';
-import fs from 'fs'; // Import fs for file system operations
-import path from 'path'; // Import path for handling file paths
+import fs from 'fs';
+import path from 'path';
 
 // Setup logger
 const logger = winston.createLogger({
@@ -25,10 +25,6 @@ const logger = winston.createLogger({
 const openai = new OpenAI({
   apiKey: config.openaiApiKey,
 });
-
-// Define Canvas targets
-// const CANVAS_COURSE_NAME = "Physics 101"; // Replace/Update with the desired course name
-// const CANVAS_QUIZ_NAME = "Your Demo Quiz Name"; // Replace with the exact name of your demo quiz
 
 async function handleDiagnostic(page, maxQuestionsToProcess) {
     logger.info(`Starting diagnostic test handling for ${maxQuestionsToProcess} questions (dynamically determined).`);
@@ -150,7 +146,6 @@ JSON response:`;
                     } catch (error) {
                         logger.error(`Failed to find or click MC option label for Q${questionIndex} with text "${answerText}". Error: ${error.message}`);
                         await page.screenshot({ path: path.join(screenshotDir, `Q${questionIndex}_error_mc_option.png`), fullPage: true });
-                        // Log and attempt to submit, question might be answered incorrectly.
                     }
                 } else {
                     logger.warn(`Q${questionIndex}: correctAnswer format is not recognized for multiple choice. CorrectAnswer: ${JSON.stringify(questionLlmAnalysis.correctAnswer)}`);

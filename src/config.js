@@ -19,7 +19,7 @@ if (!config.canvasUsername || !config.canvasPassword) {
   throw new Error('Canvas credentials are missing. Check your .env file.');
 }
 
-if (!config.canvasLoginUrl) { // Add validation for the new env variable
+if (!config.canvasLoginUrl) { // Validation for canvasLoginUrl
     throw new Error('Canvas login URL is missing. Check your .env file.');
 }
 

@@ -3,7 +3,7 @@ import Browserbase from '@browserbasehq/sdk';
 import { config } from './config.js';
 import winston from 'winston';
 
-// ADDED: Setup logger instance (can be simplified if winston is already configured globally and exported)
+// Setup logger instance
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.simple(), // Keep it simple for this module, or use shared config
@@ -12,11 +12,10 @@ const logger = winston.createLogger({
     ],
 });
 
-// Updated selectors for Canvas login based on provided screenshots
-const USERNAME_SELECTOR = 'input#username'; // From screenshot, specific ID
-const PASSWORD_SELECTOR = 'input#password'; // From screenshot, specific ID
-const LOGIN_BUTTON_SELECTOR = 'button[data-testid="login-button"]'; // Matches screenshot and previous
-// const POST_LOGIN_SELECTOR = '#dashboard'; // REMOVED - Rely on networkidle in scraper.js
+// Updated selectors for Canvas login
+const USERNAME_SELECTOR = 'input#username';
+const PASSWORD_SELECTOR = 'input#password';
+const LOGIN_BUTTON_SELECTOR = 'button[data-testid="login-button"]';
 
 const bb = new Browserbase({
   apiKey: config.browserbaseApiKey,
@@ -43,7 +42,7 @@ export async function loginToCanvas() {
     const context = browser.contexts()[0];
     const page = context.pages()[0];
 
-    console.log(`Navigating to ${config.canvasLoginUrl}...`); // Use a new config var for Canvas URL
+    console.log(`Navigating to ${config.canvasLoginUrl}...`);
     await page.goto(config.canvasLoginUrl, { waitUntil: 'networkidle' });
 
     console.log('Attempting to log in to Canvas...');
@@ -53,9 +52,9 @@ export async function loginToCanvas() {
 
     // Fill in credentials
     console.log('Filling username...');
-    await page.fill(USERNAME_SELECTOR, config.canvasUsername); // Use new config vars
+    await page.fill(USERNAME_SELECTOR, config.canvasUsername);
     console.log('Filling password...');
-    await page.fill(PASSWORD_SELECTOR, config.canvasPassword); // Use new config vars
+    await page.fill(PASSWORD_SELECTOR, config.canvasPassword);
 
     // Click login button
     console.log('Clicking login button...');
@@ -65,10 +64,6 @@ export async function loginToCanvas() {
     logger.info(`Waiting for navigation to quiz page: ${config.canvasLoginUrl} after login submission...`);
     await page.waitForURL(config.canvasLoginUrl, { timeout: 25000, waitUntil: 'networkidle' });
     logger.info(`Successfully navigated to quiz page: ${page.url()}`);
-
-    // Assuming navigation to the quiz page (config.canvasLoginUrl) occurs and networkidle will catch it in the calling function.
-    // console.log('Canvas Login button clicked. Page should redirect to quiz or specified URL.'); // Old log
-    // console.log(`View session replay: https://app.browserbase.com/sessions/${session.id}`); // This log can be moved to scraper.js after login returns
 
     return { page, browser, session };
 
