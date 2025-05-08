@@ -1,19 +1,17 @@
 # Pandora
 
-Pandora is a testing framework for evaluating online assessments on their susceptibility to AI-based cheating. It's a Node.js script that uses Playwright, Browserbase, and the OpenAI API (GPT-4o for vision and analysis) to automatically navigate and complete Canvas quizzes.
+Pandora is a testing framework for evaluating online assessments on their susceptibility to AI-based cheating. It's designed as a Node.js script that uses Playwright, Browserbase, and the OpenAI API (GPT-4o for vision and analysis) to automatically navigate and complete Canvas quizzes, but can be modified to work with any online learning system.
 
 ## Features
 
-*   Logs into Canvas using provided credentials.
-*   Navigates to a specified quiz URL.
+*   Logs into Canvas/other LMS using provided credentials.
+*   Navigates to specified quiz/assessment.
 *   Dynamically determines the number of questions on the quiz landing page.
 *   For each question:
     *   Takes a screenshot.
     *   Uses OpenAI GPT-4o vision capabilities to analyze the screenshot, determine the question type, text, and available options.
-    *   Attempts to determine the correct answer.
-    *   If the LLM cannot determine a correct answer for a multiple-choice question but provides options, it will select the first option as a fallback.
-    *   Selects the answer(s) on the page using hardcoded selectors.
-    *   Navigates to the next question or submits the quiz.
+    *   Determines and submits the correct answer.
+    *   Selects the answer(s) on the page, navigates to the next question or submits the quiz.
 *   Saves screenshots of each question and post-submission page for debugging and review.
 *   Logs detailed information about its progress and any errors encountered.
 
@@ -21,9 +19,9 @@ Pandora is a testing framework for evaluating online assessments on their suscep
 
 *   Node.js (v16 or later recommended)
 *   npm (usually comes with Node.js)
-*   Access to a Canvas instance with a quiz you want to target.
-*   A Browserbase account and API key.
-*   An OpenAI account and API key.
+*   Access to a Canvas instance with a quiz you want to target, or an LMS of your choice with an assessment you want to test.
+*   A Browserbase account and API key (free plan includes 60 min of scraping/month)
+*   An OpenAI account and API key (running this on a 5-question Canvas quiz takes about 
 
 ## Setup
 
@@ -39,11 +37,9 @@ Pandora is a testing framework for evaluating online assessments on their suscep
     ```
 
 3.  **Configure Environment Variables:**
-    Create a `.env` file in the root of the project directory. This file will store your sensitive credentials and configuration.
+    Create a `.env` file in the root of the project directory by copying and renaming .env.example.
 
-    Copy the following template into your `.env` file and replace the placeholder values with your actual credentials and URLs:
-
-    ```env
+    ```env.example
     # Browserbase Configuration
     BROWSERBASE_API_KEY="your_browserbase_api_key_here"
     BROWSERBASE_PROJECT_ID="your_browserbase_project_id_here"
