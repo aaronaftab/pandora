@@ -1,8 +1,27 @@
 {
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "pandora",
+  "version": "1.0.0",
+  "description": "An open-source testing framework for evaluating online assessments on their susceptibility to AI-based cheating",
+  "main": "src/scraper.js",
   "type": "module",
+  "scripts": {
+    "start": "node src/scraper.js"
+  },
+  "keywords": [
+    "pandora",
+    "ai",
+    "cheating",
+    "testing",
+    "framework",
+    "online",
+    "assessment",
+    "education",
+    "academic-integrity",
+    "canvas",
+    "scraper"
+  ],
+  "author": "",
+  "license": "Unlicense",
   "dependencies": {
     "@browserbasehq/sdk": "^2.5.0",
     "dotenv": "^16.5.0",

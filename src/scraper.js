@@ -44,7 +44,7 @@ async function handleDiagnostic(page, maxQuestionsToProcess) {
             logger.info(`--- Processing Question ${questionIndex} of ${maxQuestionsToProcess} ---`);
 
             logger.info('Waiting for question page to be ready...');
-            await page.waitForLoadState('networkidle', { timeout: 10000 });
+            await page.waitForLoadState('load', { timeout: 10000 });
 
             // --- 1. Take Screenshot of Question ---
             logger.info('Taking screenshot of the question page...');
@@ -58,6 +58,8 @@ async function handleDiagnostic(page, maxQuestionsToProcess) {
             logger.info('Calling GPT-4o (vision) for question analysis and answer...');
             const questionAnalysisPrompt = `Analyze the provided screenshot of a quiz question page. Determine the question text, and classify the questionType.
 Available questionTypes are: "multiple-choice-single" (requires selecting one option using a radio button), "multiple-choice-multiple" (allows selecting multiple options using checkboxes), "free-response", or "other". Pay close attention to the input elements: checkboxes usually indicate multiple selections are possible (multiple-choice-multiple), while radio buttons usually indicate only a single selection is possible (multiple-choice-single).
+
+Read every word of the question meticulously. Ensure your answer directly addresses the specific scenario or example described in the question, not a more general version of the question. Pay close attention to any specific details, constraints, or context provided in the question text and images.
 
 For "multiple-choice-single":
 - Provide the full text of the correct answer as a string in the "correctAnswer" field.
@@ -170,7 +172,7 @@ JSON response:`;
 
                     // --- 3.5 Wait and Screenshot after Next click ---
                     logger.info('Waiting after Next button click for potential explanation/feedback or next question...');
-                    await page.waitForLoadState('networkidle', { timeout: 15000 });
+                    await page.waitForLoadState('load', { timeout: 15000 });
                     await page.waitForTimeout(2000); // Small extra buffer
 
                     logger.info('Taking screenshot of the post-Next click page...');
@@ -192,6 +194,14 @@ JSON response:`;
                     await page.locator(SUBMIT_QUIZ_BUTTON_SELECTOR).click({ timeout: 15000 }); // Standard timeout
                     logger.info('Submit Quiz button clicked successfully.');
                     actionTaken = 'quiz_submitted';
+
+                    // Wait for 5 seconds and take a screenshot of the post-submission page
+                    logger.info('Quiz submitted. Waiting 5 seconds for post-submission page to load/settle...');
+                    await page.waitForTimeout(5000);
+                    const postSubmissionScreenshotPath = path.join(screenshotDir, `Q${questionIndex}_final_submission_page.png`);
+                    await page.screenshot({ path: postSubmissionScreenshotPath, fullPage: true });
+                    logger.info(`Saved post-submission screenshot to: ${postSubmissionScreenshotPath}`);
+
                 } catch (error) {
                     logger.error(`Critical: Failed to click Submit Quiz button on the last question (Q${questionIndex}). Error: ${error.message}`);
                     await page.screenshot({ path: path.join(screenshotDir, `Q${questionIndex}_error_submit_quiz.png`), fullPage: true });
@@ -208,7 +218,7 @@ JSON response:`;
             logger.info(`--- Finished processing attempt for Question ${questionIndex} ---`);
 
             if (actionTaken === 'quiz_submitted') {
-                logger.info('Quiz has been submitted (last question processed). Ending diagnostic handling.');
+                logger.info('Quiz has been submitted (last question processed and final screenshot taken). Ending diagnostic handling.');
                 return diagnosticData; // Exit from handleDiagnostic
             }
             // If loop continues, it means next_question_clicked was the action
@@ -280,7 +290,7 @@ async function runCanvasScraper() {
     
     // Wait for navigation/content update after clicking "Start Quiz"
     logger.info('Waiting for quiz to load after clicking "Start Quiz"...');
-    await page.waitForLoadState('networkidle', { timeout: 20000 }); // General wait
+    await page.waitForLoadState('load', { timeout: 20000 }); // CHANGED from 'networkidle' to 'load'
     // Add more specific waits here if needed, e.g., for the first question's container.
 
     // Start handling the diagnostic/quiz questions
