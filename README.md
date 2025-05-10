@@ -1,3 +1,11 @@
+https://github.com/user-attachments/assets/c269f4cc-442c-43bd-a9e9-216e436c20fb
+
+Pandora running on a Canvas quiz comprised of MIT OCW problems (4x speed)
+
+https://github.com/user-attachments/assets/e5932406-ec25-43b8-b5a0-62e1ec837c9e
+
+Pandora terminal output (regular speed, 1:40 total completion time)
+
 # Pandora
 
 Pandora is a testing framework for evaluating online assessments on their susceptibility to AI-based cheating. It's designed as a Node.js script that uses Playwright, Browserbase, and the OpenAI API (GPT-4o for vision and analysis) to automatically navigate and complete Canvas quizzes, but can be modified to work with any online learning system.
